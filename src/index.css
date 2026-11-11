@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #0D0D0D;
+    --bg-surface: #121212;
+    --bg-card: #181818;
+    --text-primary: #FBF9F5;
+    --text-muted: #A39E93;
+    --accent-terracotta: #C85A32;
+    --accent-gold: #D9A35F;
+    --accent-basil: #5B7052;
+  }
+
+  body {
+    background-color: #0D0D0D;
+    color: #FBF9F5;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'DM Serif Display', 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Custom glowing and ambient effects */
+.glow-terracotta {
+  box-shadow: 0 0 35px -5px rgba(200, 90, 50, 0.25);
+}
+
+.glow-gold {
+  box-shadow: 0 0 30px -5px rgba(217, 163, 95, 0.2);
+}
+
+.text-glow {
+  text-shadow: 0 0 25px rgba(217, 163, 95, 0.35);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C85A32;
+}
+
+/* Lenis smooth scroll essentials */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Glassmorphism utility helpers */
+.glass-panel {
+  background: rgba(18, 18, 18, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-warm {
+  background: linear-gradient(135deg, rgba(25, 20, 18, 0.7) 0%, rgba(18, 18, 18, 0.85) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(200, 90, 50, 0.15);
+}
