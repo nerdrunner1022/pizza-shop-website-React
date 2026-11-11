@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Lock, Menu as MenuIcon, X, Flame } from 'lucide-react';
+import { ShoppingBag, Lock, Menu as MenuIcon, X, Flame, Volume2, VolumeX } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import { hearthAudio } from '../../utils/hearthAudio';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
   const { cart, toggleCart, isAuthenticated } = useStore();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+
+  const toggleHearthAudio = () => {
+    const active = hearthAudio.toggle();
+    setIsAudioPlaying(active);
+  };
 
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -33,9 +40,9 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-3 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 lg:px-12 py-3 transition-all duration-300">
       <nav
-        className={`max-w-[1240px] mx-auto flex items-center justify-between px-5 sm:px-8 py-3 rounded-full transition-all duration-300 border ${
+        className={`w-full flex items-center justify-between px-6 sm:px-10 py-3 rounded-full transition-all duration-300 border ${
           isScrolled
             ? 'bg-[#121212]/85 backdrop-blur-xl border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.5)]'
             : 'bg-[#121212]/50 backdrop-blur-md border-white/5 shadow-lg'
@@ -79,8 +86,26 @@ export const Navbar: React.FC = () => {
           })}
         </div>
 
-        {/* Right Actions: Cart & Staff Login */}
-        <div className="flex items-center gap-3">
+        {/* Right Actions: Hearth Sound, Cart & Staff Login */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Ambient Wood-Oven Sound Toggle */}
+          <button
+            onClick={toggleHearthAudio}
+            title={isAudioPlaying ? 'Mute 900°F Hearth Ambience' : 'Play 900°F Hearth Ambience'}
+            className={`p-2 rounded-full border transition-all duration-200 flex items-center justify-center ${
+              isAudioPlaying
+                ? 'bg-[#C85A32]/25 border-[#C85A32] text-[#D9A35F] shadow-[0_0_12px_rgba(200,90,50,0.5)]'
+                : 'bg-white/5 border-white/10 text-[#A39E93] hover:text-[#FBF9F5] hover:bg-white/10'
+            }`}
+            aria-label="Toggle Hearth Sound"
+          >
+            {isAudioPlaying ? (
+              <Volume2 className="w-4 h-4 text-[#D9A35F] animate-pulse" />
+            ) : (
+              <VolumeX className="w-4 h-4" />
+            )}
+          </button>
+
           {/* Cart Button */}
           <button
             onClick={toggleCart}
@@ -121,7 +146,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden mt-2 max-w-[1240px] mx-auto bg-[#121212]/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 shadow-2xl animate-in fade-in slide-in-from-top-3 duration-200">
+        <div className="md:hidden mt-2 w-full bg-[#121212]/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-5 shadow-2xl animate-in fade-in slide-in-from-top-3 duration-200">
           <div className="flex flex-col gap-4">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;

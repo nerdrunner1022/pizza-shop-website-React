@@ -32,8 +32,8 @@ export const LocationPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] text-[#FBF9F5] pt-32 pb-24 px-4 sm:px-8">
-      <div className="max-w-[1280px] mx-auto space-y-16">
+    <div className="min-h-screen bg-[#0D0D0D] text-[#FBF9F5] pt-32 pb-24 px-6 sm:px-12 lg:px-16 xl:px-20 w-full">
+      <div className="w-full space-y-16">
         {/* Page Header */}
         <div className="text-center space-y-4 max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs uppercase tracking-widest text-[#D9A35F]">

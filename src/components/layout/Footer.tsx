@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
       {/* Subtle background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-28 bg-[#C85A32]/10 blur-[100px] pointer-events-none" />
 
-      <div className="max-w-[1280px] mx-auto px-6 sm:px-8">
+      <div className="w-full px-6 sm:px-12 lg:px-16 xl:px-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Column */}
           <div className="space-y-4">

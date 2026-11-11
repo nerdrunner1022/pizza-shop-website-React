@@ -114,7 +114,7 @@ export const HomePage: React.FC = () => {
       {/* 1. HERO 3D SECTION */}
       <section
         ref={heroRef}
-        className="relative min-h-[100vh] lg:min-h-[105vh] flex items-center pt-28 pb-16 px-4 sm:px-8 border-b border-white/5"
+        className="relative min-h-[100vh] lg:min-h-[105vh] flex items-center pt-28 pb-16 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 w-full"
       >
         {/* Background 3D Scene */}
         <div className="absolute inset-0 z-0 pointer-events-auto">
@@ -125,8 +125,8 @@ export const HomePage: React.FC = () => {
         <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-[#C85A32]/12 blur-[140px] pointer-events-none rounded-full" />
         <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-[#D9A35F]/10 blur-[130px] pointer-events-none rounded-full" />
 
-        {/* Foreground Content (boxed in max-w-[1280px]) */}
-        <div className="relative z-10 max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pointer-events-none">
+        {/* Foreground Content (Full Viewport Width) */}
+        <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pointer-events-none">
           <div className="lg:col-span-7 xl:col-span-6 space-y-6 pointer-events-auto">
             {/* Pill */}
             <div className="hero-pill inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1A1A1A]/90 border border-[#D9A35F]/30 backdrop-blur-md shadow-lg">
@@ -217,8 +217,8 @@ export const HomePage: React.FC = () => {
 
       {/* 2. SEASONAL DROP HIGHLIGHT */}
       {seasonalCampaign.isActive && (
-        <section className="py-12 px-4 sm:px-8 border-b border-white/5">
-          <div className="max-w-[1280px] mx-auto">
+        <section className="py-12 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 w-full">
+          <div className="w-full">
             <div className="reveal-card glass-panel-warm rounded-3xl p-6 sm:p-10 border border-[#C85A32]/30 relative overflow-hidden shadow-[0_0_50px_rgba(200,90,50,0.15)]">
               <div className="absolute -top-16 -right-16 w-64 h-64 bg-[#C85A32]/20 rounded-full blur-[90px] pointer-events-none" />
 
@@ -265,8 +265,8 @@ export const HomePage: React.FC = () => {
       )}
 
       {/* 3. INTERACTIVE MENU TEASER (3D SPOTLIGHT CARDS) */}
-      <section className="py-24 px-4 sm:px-8 border-b border-white/5 relative">
-        <div className="max-w-[1280px] mx-auto space-y-12">
+      <section className="py-24 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 relative w-full">
+        <div className="w-full space-y-12">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-3 max-w-xl">
@@ -356,9 +356,9 @@ export const HomePage: React.FC = () => {
       {/* 4. HERITAGE & CRAFT PREVIEW (SCROLL STORYTELLING) */}
       <section
         ref={heritageSectionRef}
-        className="py-28 px-4 sm:px-8 border-b border-white/5 relative overflow-hidden"
+        className="py-28 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 relative overflow-hidden w-full"
       >
-        <div className="max-w-[1280px] mx-auto">
+        <div className="w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Editorial Left Pillar */}
             <div className="lg:col-span-6 space-y-6">
@@ -461,8 +461,8 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 5. LOCATION & HOURS QUICK-VIEW */}
-      <section className="py-20 px-4 sm:px-8 border-b border-white/5">
-        <div className="max-w-[1280px] mx-auto">
+      <section className="py-20 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 w-full">
+        <div className="w-full">
           <div className="reveal-card glass-panel rounded-3xl p-8 sm:p-12 border border-white/10 relative overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-4">
@@ -518,8 +518,8 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 6. REVIEWS & SOCIAL PROOF CAROUSEL */}
-      <section className="py-24 px-4 sm:px-8">
-        <div className="max-w-[1280px] mx-auto space-y-12">
+      <section className="py-24 px-6 sm:px-12 lg:px-16 xl:px-20 w-full">
+        <div className="w-full space-y-12">
           <div className="text-center space-y-3 max-w-xl mx-auto">
             <span className="text-xs uppercase tracking-[0.2em] text-[#D9A35F] font-semibold">
               Acclaim & Critic Dispatches

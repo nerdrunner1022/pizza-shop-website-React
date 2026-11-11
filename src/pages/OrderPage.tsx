@@ -225,8 +225,8 @@ export const OrderPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] text-[#FBF9F5] pt-32 pb-24 px-4 sm:px-8">
-      <div className="max-w-[1280px] mx-auto space-y-10">
+    <div className="min-h-screen bg-[#0D0D0D] text-[#FBF9F5] pt-32 pb-24 px-6 sm:px-12 lg:px-16 xl:px-20 w-full">
+      <div className="w-full space-y-10">
         {/* Step Indicator Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/10">
           <div>

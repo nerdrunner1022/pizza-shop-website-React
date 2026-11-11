@@ -69,8 +69,8 @@ export const MenuPage: React.FC = () => {
   }, [menuItems, activeCategory, selectedTag, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] text-[#FBF9F5] pt-32 pb-24 px-4 sm:px-8">
-      <div className="max-w-[1280px] mx-auto space-y-12">
+    <div className="min-h-screen bg-[#0D0D0D] text-[#FBF9F5] pt-32 pb-24 px-6 sm:px-12 lg:px-16 xl:px-20 w-full">
+      <div className="w-full space-y-12">
         {/* Header Hero */}
         <div className="space-y-4 text-center max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs uppercase tracking-widest text-[#D9A35F]">
@@ -167,7 +167,7 @@ export const MenuPage: React.FC = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8 w-full">
             {filteredItems.map((item) => (
               <div
                 key={item.id}
