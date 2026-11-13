@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { CategoryType, DietaryTag, MenuItem } from '../types';
-import { MiniPizzaViewer } from '../components/3d/MiniPizzaViewer';
+import { getMenuItemImage } from '../data/menuImages';
 
 export const MenuPage: React.FC = () => {
   const { menuItems, setActiveItemForModal, addToCart } = useStore();
@@ -69,15 +69,15 @@ export const MenuPage: React.FC = () => {
   }, [menuItems, activeCategory, selectedTag, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] text-[#FBF9F5] pt-32 pb-24 px-6 sm:px-12 lg:px-16 xl:px-20 w-full">
-      <div className="w-full space-y-12">
+    <div className="min-h-screen bg-[#0D0D0D] text-[#FBF9F5] pt-24 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-8 lg:px-16 xl:px-20 w-full">
+      <div className="w-full space-y-8 sm:space-y-12">
         {/* Header Hero */}
-        <div className="space-y-4 text-center max-w-2xl mx-auto">
+        <div className="space-y-3 sm:space-y-4 text-center max-w-2xl mx-auto px-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs uppercase tracking-widest text-[#D9A35F]">
             <Flame className="w-3.5 h-3.5 text-[#C85A32]" />
             <span>Neapolitan Wood-Fired Menu</span>
           </div>
-          <h1 className="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-[#FBF9F5]">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#FBF9F5]">
             Artisanal Offerings
           </h1>
           <p className="text-xs sm:text-sm text-[#A39E93] font-light leading-relaxed">
@@ -86,18 +86,18 @@ export const MenuPage: React.FC = () => {
         </div>
 
         {/* Filter Controls Bar */}
-        <div className="space-y-4 bg-[#141414] p-6 rounded-3xl border border-white/10 shadow-xl">
+        <div className="space-y-4 bg-[#141414] p-4 sm:p-6 rounded-3xl border border-white/10 shadow-xl">
           {/* Top Row: Search & Category Tabs */}
           <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
-            {/* Category tabs */}
-            <div className="flex flex-wrap items-center gap-1.5 w-full lg:w-auto">
+            {/* Category tabs: horizontal scroll on mobile */}
+            <div className="flex items-center gap-1.5 w-full lg:w-auto overflow-x-auto no-scrollbar pb-1 sm:pb-0 scroll-smooth">
               {categories.map((cat) => {
                 const isActive = activeCategory === cat.id;
                 return (
                   <button
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
-                    className={`px-4 py-2 rounded-xl text-xs uppercase tracking-wider font-medium transition-all ${
+                    className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs uppercase tracking-wider font-medium transition-all shrink-0 ${
                       isActive
                         ? 'bg-[#C85A32] text-white shadow-[0_0_15px_rgba(200,90,50,0.4)]'
                         : 'bg-white/5 text-[#A39E93] hover:text-[#FBF9F5] hover:bg-white/10'
@@ -122,11 +122,11 @@ export const MenuPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Bottom Row: Dietary Badges Filter */}
-          <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-white/5">
-            <span className="text-[11px] uppercase tracking-widest text-[#A39E93] flex items-center gap-1.5 mr-2">
+          {/* Bottom Row: Dietary Badges Filter: horizontal scroll on mobile */}
+          <div className="flex items-center gap-2 pt-3 sm:pt-4 border-t border-white/5 overflow-x-auto no-scrollbar pb-1 sm:pb-0">
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-widest text-[#A39E93] flex items-center gap-1.5 shrink-0 mr-1">
               <Filter className="w-3 h-3 text-[#D9A35F]" />
-              <span>Dietary Filter:</span>
+              <span>Dietary:</span>
             </span>
             {dietaryTags.map((tag) => {
               const isSelected = selectedTag === tag;
@@ -134,7 +134,7 @@ export const MenuPage: React.FC = () => {
                 <button
                   key={tag}
                   onClick={() => setSelectedTag(tag)}
-                  className={`px-3 py-1 rounded-full text-[11px] font-medium transition-all ${
+                  className={`px-3 py-1 rounded-full text-[11px] font-medium transition-all shrink-0 ${
                     isSelected
                       ? 'bg-[#D9A35F] text-black font-semibold'
                       : 'bg-white/5 text-[#A39E93] hover:text-[#FBF9F5] border border-white/5'
@@ -175,23 +175,17 @@ export const MenuPage: React.FC = () => {
                   item.isOutOfStock ? 'opacity-65' : ''
                 }`}
               >
-                {/* 3D Visual Preview / Thumbnail Stage */}
+                {/* Menu Item Photo */}
                 <div
                   onClick={() => !item.isOutOfStock && setActiveItemForModal(item)}
-                  className="relative h-52 -mx-2 -mt-2 rounded-2xl bg-gradient-to-b from-black/50 to-transparent overflow-hidden flex items-center justify-center cursor-pointer"
+                  className="relative h-52 -mx-2 -mt-2 rounded-2xl bg-black/50 overflow-hidden cursor-pointer"
                 >
-                  {item.category === 'pizzas' ? (
-                    <MiniPizzaViewer variant={item.modelVariant as any} className="w-full h-full" />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center space-y-2 text-[#D9A35F]/70">
-                      <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-2xl">
-                        {item.category === 'desserts' ? '🍮' : item.category === 'drinks' ? '🍷' : '🥖'}
-                      </div>
-                      <span className="text-[10px] uppercase tracking-widest text-[#A39E93]">
-                        {item.category}
-                      </span>
-                    </div>
-                  )}
+                  <img
+                    src={getMenuItemImage(item)}
+                    alt={item.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
 
                   {/* Out of stock badge */}
                   {item.isOutOfStock && (

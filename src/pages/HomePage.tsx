@@ -5,8 +5,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { 
   ArrowRight, 
   Flame, 
-  Clock, 
-  Sparkles, 
   ChevronRight, 
   Star, 
   Compass, 
@@ -24,7 +22,7 @@ import { CUSTOMER_REVIEWS, HERITAGE_TIMELINE } from '../data/mockData';
 gsap.registerPlugin(ScrollTrigger);
 
 export const HomePage: React.FC = () => {
-  const { menuItems, setActiveItemForModal, seasonalCampaign } = useStore();
+  const { menuItems, setActiveItemForModal } = useStore();
   const heroRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const ctaGroupRef = useRef<HTMLDivElement>(null);
@@ -43,15 +41,9 @@ export const HomePage: React.FC = () => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
       tl.fromTo(
-        '.hero-pill',
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1.0, delay: 0.2 }
-      )
-        .fromTo(
           '.hero-line',
           { opacity: 0, y: 40, skewY: 2 },
           { opacity: 1, y: 0, skewY: 0, duration: 1.4, stagger: 0.18 },
-          '-=0.7'
         )
         .fromTo(
           '.hero-description',
@@ -86,7 +78,28 @@ export const HomePage: React.FC = () => {
         });
       }
 
-      // 3. Reveal animations for cards as they enter viewport
+      // 3. Reveal each content section as it approaches the viewport.
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.utils.toArray<HTMLElement>('.home-scroll-reveal').forEach((section) => {
+          gsap.fromTo(
+            section,
+            { opacity: 0, y: 56 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 88%',
+                toggleActions: 'play none none none',
+              },
+            }
+          );
+        });
+      }
+
+      // 4. Reveal animations for cards as they enter viewport
       gsap.utils.toArray<HTMLElement>('.reveal-card').forEach((card) => {
         gsap.fromTo(
           card,
@@ -114,7 +127,7 @@ export const HomePage: React.FC = () => {
       {/* 1. HERO 3D SECTION */}
       <section
         ref={heroRef}
-        className="relative min-h-[100vh] lg:min-h-[105vh] flex items-center pt-28 pb-16 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 w-full"
+        className="relative min-h-[110vh] sm:min-h-[100vh] lg:min-h-[105vh] flex items-start sm:items-center pt-24 sm:pt-28 pb-12 sm:pb-16 px-4 sm:px-8 lg:px-16 xl:px-20 border-b border-white/5 w-full"
       >
         {/* Background 3D Scene */}
         <div className="absolute inset-0 z-0 pointer-events-auto">
@@ -122,24 +135,16 @@ export const HomePage: React.FC = () => {
         </div>
 
         {/* Subtle radial atmosphere gradients */}
-        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-[#C85A32]/12 blur-[140px] pointer-events-none rounded-full" />
-        <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-[#D9A35F]/10 blur-[130px] pointer-events-none rounded-full" />
+        <div className="absolute top-1/4 left-0 w-[320px] sm:w-[500px] h-[320px] sm:h-[500px] bg-[#C85A32]/12 blur-[100px] sm:blur-[140px] pointer-events-none rounded-full" />
+        <div className="absolute bottom-10 right-10 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] bg-[#D9A35F]/10 blur-[90px] sm:blur-[130px] pointer-events-none rounded-full" />
 
         {/* Foreground Content (Full Viewport Width) */}
-        <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pointer-events-none">
-          <div className="lg:col-span-7 xl:col-span-6 space-y-6 pointer-events-auto">
-            {/* Pill */}
-            <div className="hero-pill inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1A1A1A]/90 border border-[#D9A35F]/30 backdrop-blur-md shadow-lg">
-              <span className="w-2 h-2 rounded-full bg-[#C85A32] animate-pulse" />
-              <span className="text-[11px] font-mono tracking-widest uppercase text-[#D9A35F]">
-                Neapolitan Craft • 900°F Hearth
-              </span>
-            </div>
-
+        <div className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center pointer-events-none">
+          <div className="lg:col-span-7 xl:col-span-6 space-y-4 sm:space-y-6 pointer-events-auto">
             {/* Staggered Main Headline */}
             <h1
               ref={headlineRef}
-              className="font-serif text-4xl sm:text-6xl xl:text-7xl font-bold tracking-tight text-[#FBF9F5] leading-[1.08]"
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-[#FBF9F5] leading-[1.12]"
             >
               <span className="hero-line block">Artisanal Flame,</span>
               <span className="hero-line block bg-gradient-to-r from-[#FBF9F5] via-[#EFE9DC] to-[#D9A35F] bg-clip-text text-transparent">
@@ -148,16 +153,16 @@ export const HomePage: React.FC = () => {
             </h1>
 
             {/* Editorial Subtitle */}
-            <p className="hero-description text-sm sm:text-base text-[#A39E93] leading-relaxed max-w-lg font-light">
+            <p className="hero-description text-xs sm:text-sm lg:text-base text-[#A39E93] leading-relaxed max-w-lg font-light">
               We slow-ferment our heirloom mother dough for 72 hours, crown it with
               hand-crushed San Marzano tomatoes and creamy Campania mozzarella, then blister it in 85 seconds over fragrant sweet oak embers.
             </p>
 
             {/* Primary CTAs */}
-            <div ref={ctaGroupRef} className="flex flex-wrap items-center gap-4 pt-2">
+            <div ref={ctaGroupRef} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <Link
                 to="/order"
-                className="px-8 py-4 rounded-full bg-gradient-to-r from-[#C85A32] to-[#B84E28] text-white text-xs uppercase tracking-widest font-semibold flex items-center gap-2.5 shadow-[0_0_30px_rgba(200,90,50,0.4)] hover:shadow-[0_0_40px_rgba(200,90,50,0.6)] hover:scale-[1.02] transition-all"
+                className="px-6 py-3.5 sm:px-8 sm:py-4 rounded-full bg-gradient-to-r from-[#C85A32] to-[#B84E28] text-white text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(200,90,50,0.4)] hover:shadow-[0_0_40px_rgba(200,90,50,0.6)] hover:scale-[1.02] transition-all"
               >
                 <span>Order Online</span>
                 <ArrowRight className="w-4 h-4 text-[#FBF9F5]" />
@@ -165,107 +170,46 @@ export const HomePage: React.FC = () => {
 
               <Link
                 to="/menu"
-                className="px-7 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#D9A35F]/40 text-[#FBF9F5] text-xs uppercase tracking-widest font-medium transition-all backdrop-blur-md"
+                className="px-6 py-3.5 sm:px-7 sm:py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#D9A35F]/40 text-[#FBF9F5] text-xs uppercase tracking-widest font-medium transition-all backdrop-blur-md text-center"
               >
                 <span>Explore Menu</span>
               </Link>
             </div>
 
             {/* Quick Metrics Bar */}
-            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-white/10 max-w-md">
+            <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-4 sm:pt-6 border-t border-white/10 max-w-md">
               <div className="hero-stat">
-                <span className="font-serif text-2xl sm:text-3xl font-bold text-[#D9A35F] block">
-                  72<span className="text-xs font-sans text-[#A39E93]">hrs</span>
+                <span className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-[#D9A35F] block">
+                  72<span className="text-[10px] sm:text-xs font-sans text-[#A39E93]">hrs</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-wider text-[#A39E93]">
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#A39E93]">
                   Cold Ferment
                 </span>
               </div>
               <div className="hero-stat">
-                <span className="font-serif text-2xl sm:text-3xl font-bold text-[#C85A32] block">
-                  900<span className="text-xs font-sans text-[#A39E93]">°F</span>
+                <span className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-[#C85A32] block">
+                  900<span className="text-[10px] sm:text-xs font-sans text-[#A39E93]">°F</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-wider text-[#A39E93]">
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#A39E93]">
                   Volcanic Oven
                 </span>
               </div>
               <div className="hero-stat">
-                <span className="font-serif text-2xl sm:text-3xl font-bold text-[#FBF9F5] block">
-                  100<span className="text-xs font-sans text-[#A39E93]">%</span>
+                <span className="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-[#FBF9F5] block">
+                  100<span className="text-[10px] sm:text-xs font-sans text-[#A39E93]">%</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-wider text-[#A39E93]">
+                <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-[#A39E93]">
                   D.O.P. Italian
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Right Spatial Helper Badge */}
-          <div className="hidden lg:flex lg:col-span-5 xl:col-span-6 justify-end items-end h-full pb-8">
-            <div className="glass-panel p-4 rounded-2xl border border-white/10 max-w-xs space-y-2 pointer-events-auto shadow-2xl">
-              <div className="flex items-center gap-2 text-xs font-semibold text-[#D9A35F]">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Interactive Centerpiece</span>
-              </div>
-              <p className="text-[11px] text-[#A39E93] font-light leading-relaxed">
-                Click & drag to rotate the signature Margherita Verace. Notice the puffed cornicione and leopard char.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* 2. SEASONAL DROP HIGHLIGHT */}
-      {seasonalCampaign.isActive && (
-        <section className="py-12 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 w-full">
-          <div className="w-full">
-            <div className="reveal-card glass-panel-warm rounded-3xl p-6 sm:p-10 border border-[#C85A32]/30 relative overflow-hidden shadow-[0_0_50px_rgba(200,90,50,0.15)]">
-              <div className="absolute -top-16 -right-16 w-64 h-64 bg-[#C85A32]/20 rounded-full blur-[90px] pointer-events-none" />
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                <div className="lg:col-span-8 space-y-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C85A32]/20 border border-[#C85A32]/40 text-[#D9A35F] text-[10px] uppercase tracking-widest font-semibold">
-                    <Sparkles className="w-3 h-3 text-[#D9A35F]" />
-                    <span>{seasonalCampaign.badgeText}</span>
-                  </div>
-
-                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#FBF9F5]">
-                    {seasonalCampaign.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-[#A39E93] max-w-2xl font-light leading-relaxed">
-                    {seasonalCampaign.description}
-                  </p>
-
-                  <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-[#EFE9DC]">
-                    <span className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-[#D9A35F]" />
-                      <span>Available until {seasonalCampaign.validUntil}</span>
-                    </span>
-                    <span className="hidden sm:inline">•</span>
-                    <span className="font-mono text-[11px] px-2.5 py-1 rounded bg-black/40 border border-white/10 text-[#D9A35F]">
-                      Use Code: <strong className="text-white">{seasonalCampaign.promoCode}</strong> for {seasonalCampaign.discountPercentage}% off
-                    </span>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-4 flex lg:justify-end">
-                  <Link
-                    to="/menu"
-                    className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-[#FBF9F5] text-[#0D0D0D] hover:bg-[#D9A35F] text-xs uppercase tracking-widest font-semibold flex items-center justify-center gap-2 transition-colors shadow-lg"
-                  >
-                    <span>Taste the Special</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* 3. INTERACTIVE MENU TEASER (3D SPOTLIGHT CARDS) */}
-      <section className="py-24 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 relative w-full">
+      <section className="home-scroll-reveal py-24 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 relative w-full">
         <div className="w-full space-y-12">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -299,7 +243,16 @@ export const HomePage: React.FC = () => {
               >
                 {/* 3D Model Teaser Canvas */}
                 <div className="relative h-52 sm:h-56 -mx-2 -mt-2 rounded-2xl bg-gradient-to-b from-black/40 to-transparent overflow-hidden flex items-center justify-center">
-                  <MiniPizzaViewer variant={pie.modelVariant as any} className="w-full h-full" />
+                  <MiniPizzaViewer
+                    variant={pie.modelVariant}
+                    className="w-full h-full"
+                    autoRotate={false}
+                    tiltAngle={-Math.PI / 9}
+                    initialRotationY={Math.PI / 6}
+                    cameraPosition={[0, 1.6, 2]}
+                    modelScale={0.75}
+                    centerModel
+                  />
                   <div className="absolute top-3 right-3 text-xs font-mono font-semibold px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[#D9A35F] border border-white/10">
                     ${pie.price.toFixed(2)}
                   </div>
@@ -356,7 +309,7 @@ export const HomePage: React.FC = () => {
       {/* 4. HERITAGE & CRAFT PREVIEW (SCROLL STORYTELLING) */}
       <section
         ref={heritageSectionRef}
-        className="py-28 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 relative overflow-hidden w-full"
+        className="home-scroll-reveal py-28 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 relative overflow-hidden w-full"
       >
         <div className="w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -461,7 +414,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 5. LOCATION & HOURS QUICK-VIEW */}
-      <section className="py-20 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 w-full">
+      <section className="home-scroll-reveal py-20 px-6 sm:px-12 lg:px-16 xl:px-20 border-b border-white/5 w-full">
         <div className="w-full">
           <div className="reveal-card glass-panel rounded-3xl p-8 sm:p-12 border border-white/10 relative overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -518,7 +471,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* 6. REVIEWS & SOCIAL PROOF CAROUSEL */}
-      <section className="py-24 px-6 sm:px-12 lg:px-16 xl:px-20 w-full">
+      <section className="home-scroll-reveal py-24 px-6 sm:px-12 lg:px-16 xl:px-20 w-full">
         <div className="w-full space-y-12">
           <div className="text-center space-y-3 max-w-xl mx-auto">
             <span className="text-xs uppercase tracking-[0.2em] text-[#D9A35F] font-semibold">

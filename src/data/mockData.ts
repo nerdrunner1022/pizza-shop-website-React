@@ -1,4 +1,19 @@
-import { MenuItem, Order, SeasonalCampaign, DailyMetric } from '../types';
+import { InventoryItem, MenuItem, Order, SeasonalCampaign, DailyMetric } from '../types';
+
+export const INITIAL_INVENTORY: InventoryItem[] = [
+  { id: 'inv-01', name: 'Tipo 00 flour', category: 'pantry', quantity: 42, unit: 'kg', reorderLevel: 15 },
+  { id: 'inv-02', name: 'San Marzano tomatoes', category: 'pantry', quantity: 18, unit: 'kg', reorderLevel: 8 },
+  { id: 'inv-03', name: 'Bufala mozzarella', category: 'pantry', quantity: 6, unit: 'kg', reorderLevel: 8 },
+  { id: 'inv-04', name: 'Extra virgin olive oil', category: 'pantry', quantity: 12, unit: 'L', reorderLevel: 4 },
+  { id: 'inv-05', name: 'Fresh basil', category: 'pantry', quantity: 3, unit: 'kg', reorderLevel: 2 },
+  { id: 'inv-06', name: 'White oak firewood', category: 'pantry', quantity: 24, unit: 'bags', reorderLevel: 8 },
+  { id: 'inv-07', name: 'Pizza peels', category: 'utensils', quantity: 5, unit: 'units', reorderLevel: 2 },
+  { id: 'inv-08', name: 'Dough proofing trays', category: 'utensils', quantity: 18, unit: 'units', reorderLevel: 6 },
+  { id: 'inv-09', name: 'Chef knives', category: 'utensils', quantity: 8, unit: 'units', reorderLevel: 3 },
+  { id: 'inv-10', name: 'Food-safe gloves', category: 'utensils', quantity: 14, unit: 'boxes', reorderLevel: 5 },
+  { id: 'inv-11', name: 'Infrared oven thermometer', category: 'equipment', quantity: 2, unit: 'units', reorderLevel: 1 },
+  { id: 'inv-12', name: 'Digital kitchen scale', category: 'equipment', quantity: 3, unit: 'units', reorderLevel: 1 },
+];
 
 export const INITIAL_MENU_ITEMS: MenuItem[] = [
   {

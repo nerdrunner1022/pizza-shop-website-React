@@ -11,7 +11,9 @@ import {
   Flame, 
   Eye, 
   Clock, 
-  X 
+  X,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { MenuItem } from '../../types';
@@ -184,15 +186,45 @@ export const AdminMenuView: React.FC = () => {
                       <td className="py-4 px-4">
                         <div className="flex items-center gap-1 font-mono">
                           <span className="text-[#D9A35F]">$</span>
-                          <input
-                            type="number"
-                            step="0.5"
-                            value={item.price}
-                            onChange={(e) =>
-                              updateMenuItem(item.id, { price: parseFloat(e.target.value) || 0 })
-                            }
-                            className="w-16 px-2 py-1 rounded bg-black/40 border border-white/10 text-xs text-[#FBF9F5] focus:outline-none focus:border-[#D9A35F]"
-                          />
+                          <div className="flex h-10 w-28 overflow-hidden rounded-lg border border-white/10 bg-black/40 transition-colors focus-within:border-[#D9A35F] focus-within:ring-1 focus-within:ring-[#D9A35F]/30">
+                            <input
+                              type="number"
+                              min="0"
+                              step="0.5"
+                              aria-label={`${item.name} price`}
+                              value={item.price}
+                              onChange={(e) =>
+                                updateMenuItem(item.id, { price: parseFloat(e.target.value) || 0 })
+                              }
+                              className="admin-price-input min-w-0 flex-1 bg-transparent px-3 text-right text-sm tabular-nums text-[#FBF9F5] focus:outline-none"
+                            />
+                            <div className="flex w-7 shrink-0 flex-col border-l border-white/10 bg-white/[0.03]">
+                              <button
+                                type="button"
+                                aria-label={`Increase ${item.name} price`}
+                                onClick={() =>
+                                  updateMenuItem(item.id, {
+                                    price: Math.round((item.price + 0.5) * 100) / 100,
+                                  })
+                                }
+                                className="flex h-1/2 items-center justify-center text-[#A39E93] transition-colors hover:bg-[#C85A32]/20 hover:text-[#D9A35F] focus-visible:bg-[#C85A32]/20 focus-visible:text-[#D9A35F] focus-visible:outline-none"
+                              >
+                                <ChevronUp className="h-3 w-3" />
+                              </button>
+                              <button
+                                type="button"
+                                aria-label={`Decrease ${item.name} price`}
+                                onClick={() =>
+                                  updateMenuItem(item.id, {
+                                    price: Math.max(0, Math.round((item.price - 0.5) * 100) / 100),
+                                  })
+                                }
+                                className="flex h-1/2 items-center justify-center border-t border-white/10 text-[#A39E93] transition-colors hover:bg-[#C85A32]/20 hover:text-[#D9A35F] focus-visible:bg-[#C85A32]/20 focus-visible:text-[#D9A35F] focus-visible:outline-none"
+                              >
+                                <ChevronDown className="h-3 w-3" />
+                              </button>
+                            </div>
+                          </div>
                         </div>
                       </td>
 

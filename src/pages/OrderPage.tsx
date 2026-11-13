@@ -238,10 +238,10 @@ export const OrderPage: React.FC = () => {
             </h1>
           </div>
 
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1 text-[11px] sm:text-xs shrink-0">
             <button
               onClick={() => setCheckoutStep('review')}
-              className={`px-3 py-1.5 rounded-full transition-colors ${
+              className={`px-3 py-1.5 rounded-full transition-colors whitespace-nowrap shrink-0 ${
                 checkoutStep === 'review'
                   ? 'bg-[#C85A32] text-white font-semibold'
                   : 'bg-white/5 text-[#A39E93]'
@@ -249,10 +249,10 @@ export const OrderPage: React.FC = () => {
             >
               1. Review Bag
             </button>
-            <span className="text-[#A39E93]">•</span>
+            <span className="text-[#A39E93] shrink-0">•</span>
             <button
               onClick={() => setCheckoutStep('details')}
-              className={`px-3 py-1.5 rounded-full transition-colors ${
+              className={`px-3 py-1.5 rounded-full transition-colors whitespace-nowrap shrink-0 ${
                 checkoutStep === 'details'
                   ? 'bg-[#C85A32] text-white font-semibold'
                   : 'bg-white/5 text-[#A39E93]'
@@ -260,10 +260,10 @@ export const OrderPage: React.FC = () => {
             >
               2. Delivery Logistics
             </button>
-            <span className="text-[#A39E93]">•</span>
+            <span className="text-[#A39E93] shrink-0">•</span>
             <button
               onClick={() => setCheckoutStep('payment')}
-              className={`px-3 py-1.5 rounded-full transition-colors ${
+              className={`px-3 py-1.5 rounded-full transition-colors whitespace-nowrap shrink-0 ${
                 checkoutStep === 'payment'
                   ? 'bg-[#C85A32] text-white font-semibold'
                   : 'bg-white/5 text-[#A39E93]'

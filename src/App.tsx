@@ -20,6 +20,7 @@ import { AdminLayout } from './pages/admin/AdminLayout';
 import { AdminAnalyticsView } from './pages/admin/AdminAnalyticsView';
 import { AdminOrdersView } from './pages/admin/AdminOrdersView';
 import { AdminMenuView } from './pages/admin/AdminMenuView';
+import { AdminInventoryView } from './pages/admin/AdminInventoryView';
 
 export const App: React.FC = () => {
   const location = useLocation();
@@ -49,6 +50,7 @@ export const App: React.FC = () => {
             <Route index element={<AdminAnalyticsView />} />
             <Route path="orders" element={<AdminOrdersView />} />
             <Route path="menu" element={<AdminMenuView />} />
+            <Route path="inventory" element={<AdminInventoryView />} />
           </Route>
 
           {/* Catch-all */}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Flame, Clock, MapPin, Phone, Instagram, ArrowUpRight } from 'lucide-react';
+import { Clock, MapPin, Phone, Instagram, ArrowUpRight } from 'lucide-react';
+import pizzaLogo from '../../assets/SVGs/pizza-svgrepo-com.svg';
 
 export const Footer: React.FC = () => {
   return (
@@ -14,7 +15,7 @@ export const Footer: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#C85A32] to-[#8B261E] flex items-center justify-center text-white shadow-[0_0_15px_rgba(200,90,50,0.4)]">
-                <Flame className="w-4 h-4 text-[#FBF9F5]" />
+                <img src={pizzaLogo} alt="" className="w-6 h-6 object-contain" />
               </div>
               <span className="font-serif text-2xl font-bold tracking-tight text-[#FBF9F5]">
                 Antonio’s Corner
@@ -113,6 +114,50 @@ export const Footer: React.FC = () => {
               </li>
             </ul>
           </div>
+        </div>
+
+        <div className="border-t border-white/10 pt-8 mb-8">
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#D9A35F] mb-4">
+            3D Model Credits
+          </h4>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px] text-[#A39E93] font-light leading-relaxed">
+            <li>
+              <a href="https://skfb.ly/o7YYy" target="_blank" rel="noreferrer" className="text-[#FBF9F5] hover:text-[#D9A35F] underline underline-offset-2">
+                &quot;Pizza &quot;BigBoss&quot; Pancho&quot;
+              </a>{' '}
+              by ponomarovmax is licensed under{' '}
+              <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer" className="hover:text-[#D9A35F] underline underline-offset-2">
+                Creative Commons Attribution
+              </a>.
+            </li>
+            <li>
+              <a href="https://skfb.ly/oMOyp" target="_blank" rel="noreferrer" className="text-[#FBF9F5] hover:text-[#D9A35F] underline underline-offset-2">
+                “Pizza”
+              </a>{' '}
+              by darklord3d is licensed under{' '}
+              <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer" className="hover:text-[#D9A35F] underline underline-offset-2">
+                Creative Commons Attribution
+              </a>.
+            </li>
+            <li>
+              <a href="https://skfb.ly/oITIC" target="_blank" rel="noreferrer" className="text-[#FBF9F5] hover:text-[#D9A35F] underline underline-offset-2">
+                “Pizza Realistic”
+              </a>{' '}
+              by neshallads is licensed under{' '}
+              <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer" className="hover:text-[#D9A35F] underline underline-offset-2">
+                Creative Commons Attribution
+              </a>.
+            </li>
+            <li>
+              <a href="https://skfb.ly/oqzZn" target="_blank" rel="noreferrer" className="text-[#FBF9F5] hover:text-[#D9A35F] underline underline-offset-2">
+                “Pizza Napoletana”
+              </a>{' '}
+              by Ronen is licensed under{' '}
+              <a href="http://creativecommons.org/licenses/by-nd/4.0/" target="_blank" rel="noreferrer" className="hover:text-[#D9A35F] underline underline-offset-2">
+                Creative Commons Attribution-NoDerivs
+              </a>.
+            </li>
+          </ul>
         </div>
 
         {/* Bottom Bar */}

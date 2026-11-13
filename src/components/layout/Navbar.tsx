@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingBag, Lock, Menu as MenuIcon, X, Flame, Volume2, VolumeX } from 'lucide-react';
+import { ShoppingBag, Lock, Menu as MenuIcon, X, Volume2, VolumeX } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { hearthAudio } from '../../utils/hearthAudio';
+import pizzaLogo from '../../assets/SVGs/pizza-svgrepo-com.svg';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
@@ -40,24 +41,24 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 lg:px-12 py-3 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 px-2.5 sm:px-8 lg:px-12 py-2 sm:py-3 transition-all duration-300">
       <nav
-        className={`w-full flex items-center justify-between px-6 sm:px-10 py-3 rounded-full transition-all duration-300 border ${
+        className={`w-full flex items-center justify-between px-2.5 min-[380px]:px-3.5 sm:px-8 lg:px-10 py-2 sm:py-3 rounded-full transition-all duration-300 border ${
           isScrolled
-            ? 'bg-[#121212]/85 backdrop-blur-xl border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.5)]'
-            : 'bg-[#121212]/50 backdrop-blur-md border-white/5 shadow-lg'
+            ? 'bg-[#121212]/90 backdrop-blur-xl border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.5)]'
+            : 'bg-[#121212]/60 backdrop-blur-md border-white/5 shadow-lg'
         }`}
       >
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#C85A32] to-[#8B261E] flex items-center justify-center text-white shadow-[0_0_15px_rgba(200,90,50,0.4)] group-hover:scale-105 transition-transform duration-300">
-            <Flame className="w-4 h-4 text-[#FBF9F5]" />
+        <Link to="/" className="flex items-center gap-2 group shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-[#C85A32] to-[#8B261E] flex items-center justify-center text-white shadow-[0_0_15px_rgba(200,90,50,0.4)] group-hover:scale-105 transition-transform duration-300">
+            <img src={pizzaLogo} alt="" className="w-5 h-5 sm:w-6 sm:h-6 object-contain" />
           </div>
           <div className="flex flex-col">
-            <span className="font-serif text-lg sm:text-xl font-bold tracking-tight text-[#FBF9F5] group-hover:text-[#D9A35F] transition-colors">
+            <span className="font-serif text-[13px] min-[380px]:text-sm sm:text-lg lg:text-xl font-bold tracking-tight text-[#FBF9F5] group-hover:text-[#D9A35F] transition-colors whitespace-nowrap">
               Antonio’s Corner
             </span>
-            <span className="text-[9px] tracking-[0.2em] uppercase text-[#A39E93] font-sans -mt-1 font-light">
+            <span className="text-[8px] sm:text-[9px] tracking-[0.18em] uppercase text-[#A39E93] font-sans -mt-0.5 sm:-mt-1 font-light">
               Pizzeria Napoletana
             </span>
           </div>
@@ -87,12 +88,12 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* Right Actions: Hearth Sound, Cart & Staff Login */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
+        <div className="flex items-center gap-1.5 min-[380px]:gap-2.5 sm:gap-3">
           {/* Ambient Wood-Oven Sound Toggle */}
           <button
             onClick={toggleHearthAudio}
-            title={isAudioPlaying ? 'Mute 900°F Hearth Ambience' : 'Play 900°F Hearth Ambience'}
-            className={`p-2 rounded-full border transition-all duration-200 flex items-center justify-center ${
+            title={isAudioPlaying ? 'Mute Hearth Ambience' : 'Play Hearth Ambience'}
+            className={`p-1.5 min-[380px]:p-2 rounded-full border transition-all duration-200 flex items-center justify-center ${
               isAudioPlaying
                 ? 'bg-[#C85A32]/25 border-[#C85A32] text-[#D9A35F] shadow-[0_0_12px_rgba(200,90,50,0.5)]'
                 : 'bg-white/5 border-white/10 text-[#A39E93] hover:text-[#FBF9F5] hover:bg-white/10'
@@ -109,7 +110,7 @@ export const Navbar: React.FC = () => {
           {/* Cart Button */}
           <button
             onClick={toggleCart}
-            className="relative flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1A1A1A] hover:bg-[#222222] border border-white/10 hover:border-[#D9A35F]/40 text-[#FBF9F5] transition-all duration-200 group"
+            className="relative flex items-center gap-2 px-2.5 min-[380px]:px-3.5 py-1.5 rounded-full bg-[#1A1A1A] hover:bg-[#222222] border border-white/10 hover:border-[#D9A35F]/40 text-[#FBF9F5] transition-all duration-200 group"
             aria-label="Shopping Cart"
           >
             <ShoppingBag className="w-4 h-4 text-[#D9A35F] group-hover:scale-110 transition-transform" />
@@ -125,7 +126,7 @@ export const Navbar: React.FC = () => {
           <Link
             to={isAuthenticated ? '/admin' : '/admin/login'}
             title={isAuthenticated ? 'Open Admin Console' : 'Staff Portal'}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs text-[#A39E93] hover:text-[#FBF9F5] bg-transparent hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-200"
+            className="hidden min-[380px]:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs text-[#A39E93] hover:text-[#FBF9F5] bg-transparent hover:bg-white/5 border border-transparent hover:border-white/10 transition-all duration-200"
           >
             <Lock className="w-3.5 h-3.5 text-[#A39E93] hover:text-[#D9A35F] transition-colors" />
             <span className="hidden lg:inline text-[11px] tracking-wide font-light">

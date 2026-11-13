@@ -8,12 +8,14 @@ import {
   SeasonalCampaign, 
   AdminUser, 
   CrustOption, 
-  AddOnOption 
+  AddOnOption,
+  InventoryItem
 } from '../types';
 import { 
   INITIAL_MENU_ITEMS, 
   INITIAL_ORDERS, 
-  INITIAL_SEASONAL_CAMPAIGN 
+  INITIAL_SEASONAL_CAMPAIGN,
+  INITIAL_INVENTORY
 } from '../data/mockData';
 
 interface PizzeriaState {
@@ -49,6 +51,12 @@ interface PizzeriaState {
   createOrder: (orderInput: Omit<Order, 'id' | 'orderNumber' | 'createdAt' | 'status' | 'estimatedMinutesRemaining'>) => Order;
   updateOrderStatus: (orderId: string, status: OrderStatus) => void;
 
+  // Pantry & Inventory
+  inventoryItems: InventoryItem[];
+  addInventoryItem: (item: Omit<InventoryItem, 'id'>) => void;
+  updateInventoryItem: (id: string, updates: Partial<Omit<InventoryItem, 'id'>>) => void;
+  removeInventoryItem: (id: string) => void;
+
   // Seasonal Campaign
   seasonalCampaign: SeasonalCampaign;
   updateSeasonalCampaign: (updates: Partial<SeasonalCampaign>) => void;
@@ -56,7 +64,7 @@ interface PizzeriaState {
   // Admin Auth State
   isAuthenticated: boolean;
   adminUser: AdminUser | null;
-  loginAdmin: (username?: string, password?: string) => boolean;
+  loginAdmin: (username: string, password: string) => boolean;
   logoutAdmin: () => void;
 }
 
@@ -195,6 +203,29 @@ export const useStore = create<PizzeriaState>()(
         }));
       },
 
+      // Pantry & Inventory
+      inventoryItems: INITIAL_INVENTORY,
+      addInventoryItem: (item) => {
+        set((state) => ({
+          inventoryItems: [
+            ...state.inventoryItems,
+            { ...item, id: `inv-${crypto.randomUUID()}` },
+          ],
+        }));
+      },
+      updateInventoryItem: (id, updates) => {
+        set((state) => ({
+          inventoryItems: state.inventoryItems.map((item) =>
+            item.id === id ? { ...item, ...updates } : item
+          ),
+        }));
+      },
+      removeInventoryItem: (id) => {
+        set((state) => ({
+          inventoryItems: state.inventoryItems.filter((item) => item.id !== id),
+        }));
+      },
+
       // Seasonal Campaign
       seasonalCampaign: INITIAL_SEASONAL_CAMPAIGN,
       updateSeasonalCampaign: (updates) => {
@@ -212,7 +243,10 @@ export const useStore = create<PizzeriaState>()(
         email: 'antonio@antonioscorner.com',
         avatarUrl: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&q=80&w=250',
       },
-      loginAdmin: () => {
+      loginAdmin: (username, password) => {
+        if (username !== 'admin@antonioscorner.com' || password !== 'pizza900') {
+          return false;
+        }
         set({ isAuthenticated: true });
         return true;
       },
@@ -225,9 +259,14 @@ export const useStore = create<PizzeriaState>()(
       partialize: (state) => ({
         menuItems: state.menuItems,
         orders: state.orders,
+        inventoryItems: state.inventoryItems,
         seasonalCampaign: state.seasonalCampaign,
-        isAuthenticated: state.isAuthenticated,
         cart: state.cart,
+      }),
+      merge: (persistedState, currentState) => ({
+        ...currentState,
+        ...(persistedState as Partial<PizzeriaState>),
+        isAuthenticated: false,
       }),
     }
   )

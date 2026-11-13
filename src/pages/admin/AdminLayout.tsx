@@ -1,24 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { 
   BarChart3, 
-  Flame, 
-  Layers, 
-  SlidersHorizontal, 
+  Flame,
   LogOut, 
   ArrowUpRight, 
-  ChefHat, 
   Bell, 
-  Clock, 
-  ShieldCheck, 
-  UtensilsCrossed 
+  UtensilsCrossed,
+  Boxes,
+  Menu as MenuIcon,
+  X
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import pizzaLogo from '../../assets/SVGs/pizza-svgrepo-com.svg';
 
 export const AdminLayout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, logoutAdmin, adminUser, orders } = useStore();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  // Close mobile nav on route change
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [location.pathname]);
 
   // Route protection
   useEffect(() => {
@@ -30,7 +35,6 @@ export const AdminLayout: React.FC = () => {
   if (!isAuthenticated) return null;
 
   const incomingCount = orders.filter((o) => o.status === 'Incoming').length;
-  const inOvenCount = orders.filter((o) => o.status === 'In the Oven').length;
 
   const sidebarLinks = [
     {
@@ -52,6 +56,12 @@ export const AdminLayout: React.FC = () => {
       icon: UtensilsCrossed,
       badge: null,
     },
+    {
+      label: 'Pantry & Inventory',
+      path: '/admin/inventory',
+      icon: Boxes,
+      badge: null,
+    },
   ];
 
   const handleLogout = () => {
@@ -61,14 +71,39 @@ export const AdminLayout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-[#FBF9F5] flex flex-col md:flex-row font-sans">
+      <header className="md:hidden flex items-center justify-between px-4 py-3 bg-[#0D0D0D] border-b border-white/10">
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#C85A32] to-[#8B261E] flex items-center justify-center text-white shadow-md">
+            <img src={pizzaLogo} alt="" className="w-6 h-6 object-contain" />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-serif text-base font-bold text-[#FBF9F5] leading-tight">
+              Antonio’s Corner
+            </span>
+            <span className="text-[9px] uppercase tracking-widest text-[#D9A35F] font-mono">
+              Kitchen Brigade
+            </span>
+          </div>
+        </Link>
+        <button
+          type="button"
+          onClick={() => setMobileNavOpen(!mobileNavOpen)}
+          aria-label={mobileNavOpen ? 'Close admin navigation' : 'Open admin navigation'}
+          aria-expanded={mobileNavOpen}
+          className="p-2 rounded-full text-[#FBF9F5] hover:bg-white/10"
+        >
+          {mobileNavOpen ? <X className="w-5 h-5" /> : <MenuIcon className="w-5 h-5" />}
+        </button>
+      </header>
+
       {/* Sidebar Navigation */}
-      <aside className="w-full md:w-64 lg:w-72 bg-[#0D0D0D] border-r border-white/10 flex flex-col justify-between shrink-0">
+      <aside className={`${mobileNavOpen ? 'flex' : 'hidden'} md:flex w-full md:w-64 lg:w-72 bg-[#0D0D0D] border-r border-white/10 flex-col justify-between shrink-0`}>
         {/* Top Header */}
         <div className="p-6 space-y-8">
-          <div className="flex items-center justify-between">
+          <div className="hidden md:flex items-center justify-between">
             <Link to="/" className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#C85A32] to-[#8B261E] flex items-center justify-center text-white shadow-md">
-                <Flame className="w-4 h-4 text-[#FBF9F5]" />
+                <img src={pizzaLogo} alt="" className="w-6 h-6 object-contain" />
               </div>
               <div className="flex flex-col">
                 <span className="font-serif text-base font-bold text-[#FBF9F5] leading-tight">
@@ -79,24 +114,6 @@ export const AdminLayout: React.FC = () => {
                 </span>
               </div>
             </Link>
-          </div>
-
-          {/* Quick Oven Hearth Telemetry Widget */}
-          <div className="p-3.5 rounded-2xl bg-[#141414] border border-white/10 space-y-2">
-            <div className="flex items-center justify-between text-[11px]">
-              <span className="text-[#A39E93] flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                Acunto Hearth
-              </span>
-              <span className="font-mono text-[#C85A32] font-bold">918°F</span>
-            </div>
-            <div className="w-full bg-black/40 h-1.5 rounded-full overflow-hidden">
-              <div className="bg-gradient-to-r from-[#D9A35F] to-[#C85A32] h-full w-[92%]" />
-            </div>
-            <div className="flex justify-between text-[9px] text-[#A39E93]">
-              <span>In-Oven: {inOvenCount} pies</span>
-              <span>Queued: {incomingCount}</span>
-            </div>
           </div>
 
           {/* Navigation Items */}
@@ -182,11 +199,12 @@ export const AdminLayout: React.FC = () => {
       {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto min-h-screen">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-[#0D0D0D]/90 backdrop-blur-md border-b border-white/10 px-6 sm:px-10 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-[#A39E93]">Client Terminal:</span>
+        <header className="sticky top-0 z-30 bg-[#0D0D0D]/90 backdrop-blur-md border-b border-white/10 px-4 sm:px-10 py-3 sm:py-4 flex items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <span className="hidden sm:inline text-xs text-[#A39E93]">Client Terminal:</span>
             <span className="text-xs font-mono text-[#D9A35F] bg-white/5 px-2.5 py-1 rounded-md border border-white/5">
-              Station #1 (Hearth Counter)
+              <span className="sm:hidden">Station #1</span>
+              <span className="hidden sm:inline">Station #1 (Hearth Counter)</span>
             </span>
           </div>
 

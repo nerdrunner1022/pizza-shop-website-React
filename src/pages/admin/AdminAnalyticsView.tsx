@@ -22,6 +22,7 @@ export const AdminAnalyticsView: React.FC = () => {
   const totalWeeklyRevenue = 31420 + Math.round(additionalRevenue);
   const totalOrderCount = 707 + orders.length;
   const avgTicket = (totalWeeklyRevenue / totalOrderCount).toFixed(2);
+  const maxDailyRevenue = Math.max(...RECENT_DAILY_METRICS.map((day) => day.revenue));
 
   const topPies = [
     { name: 'Margherita Verace D.O.P.', sold: 284, revenue: 5538, share: '32%' },
@@ -183,27 +184,24 @@ export const AdminAnalyticsView: React.FC = () => {
 
           {/* Bar Chart Visualization */}
           <div className="pt-4 pb-2">
-            <div className="h-64 flex items-end justify-between gap-3 sm:gap-6 pt-8">
+            <div className="h-64 flex items-stretch justify-between gap-3 sm:gap-6 pt-8">
               {RECENT_DAILY_METRICS.map((day) => {
-                const maxVal = 7000;
-                const heightPct = Math.round((day.revenue / maxVal) * 100);
+                const heightPct = Math.max(8, Math.round((day.revenue / maxDailyRevenue) * 100));
                 return (
-                  <div key={day.date} className="flex-1 flex flex-col items-center gap-2 group">
-                    {/* Tooltip on hover */}
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-mono bg-black/90 px-2 py-1 rounded border border-white/10 text-[#D9A35F] pointer-events-none mb-1 text-center whitespace-nowrap">
-                      ${day.revenue} ({day.orderCount} orders)
-                    </div>
-
-                    {/* Bar */}
-                    <div className="w-full bg-white/5 rounded-t-xl overflow-hidden h-full flex items-end">
+                  <div key={day.date} className="group min-w-0 flex-1 grid grid-rows-[1fr_auto] gap-2">
+                    <div className="relative flex min-h-0 items-end rounded-t-xl bg-white/5">
                       <div
+                        role="img"
+                        aria-label={`${day.date}: $${day.revenue.toLocaleString()}, ${day.orderCount} orders`}
+                        title={`${day.date}: $${day.revenue.toLocaleString()} (${day.orderCount} orders)`}
                         style={{ height: `${heightPct}%` }}
-                        className="w-full bg-gradient-to-t from-[#C85A32] to-[#D9A35F] rounded-t-lg group-hover:brightness-110 transition-all shadow-[0_0_15px_rgba(200,90,50,0.3)]"
+                        className="w-full rounded-t-lg bg-gradient-to-t from-[#C85A32] to-[#D9A35F] shadow-[0_0_15px_rgba(200,90,50,0.3)] transition-[filter,height] group-hover:brightness-110"
                       />
+                      <span className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded border border-white/10 bg-black/90 px-2 py-1 text-center text-[10px] font-mono text-[#D9A35F] opacity-0 transition-opacity group-hover:opacity-100">
+                        ${day.revenue.toLocaleString()} ({day.orderCount} orders)
+                      </span>
                     </div>
-
-                    {/* Day Label */}
-                    <span className="text-[10px] text-[#A39E93] group-hover:text-[#FBF9F5] font-mono">
+                    <span className="text-center text-[10px] font-mono text-[#A39E93] group-hover:text-[#FBF9F5]">
                       {day.date.split(' ')[0]}
                     </span>
                   </div>

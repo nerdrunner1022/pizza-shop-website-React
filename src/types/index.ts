@@ -110,3 +110,16 @@ export interface DailyMetric {
   orderCount: number;
   avgTicket: number;
 }
+
+export type InventoryCategory = 'pantry' | 'utensils' | 'equipment';
+
+export type InventoryUnit = 'kg' | 'L' | 'units' | 'bags' | 'bottles' | 'boxes';
+
+export interface InventoryItem {
+  id: string;
+  name: string;
+  category: InventoryCategory;
+  quantity: number;
+  unit: InventoryUnit;
+  reorderLevel: number;
+}

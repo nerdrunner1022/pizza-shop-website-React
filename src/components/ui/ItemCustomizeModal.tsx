@@ -1,22 +1,29 @@
-import React, { useState } from 'react';
-import { X, Plus, Minus, Check, Flame, Sparkles } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { X, Plus, Minus, Check, Flame } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { CrustOption, AddOnOption } from '../../types';
-import { MiniPizzaViewer } from '../3d/MiniPizzaViewer';
+import { getMenuItemImage } from '../../data/menuImages';
 
 export const ItemCustomizeModal: React.FC = () => {
   const { activeItemForModal, setActiveItemForModal, addToCart } = useStore();
 
-  if (!activeItemForModal) return null;
-
-  const item = activeItemForModal;
-
-  const [selectedCrust, setSelectedCrust] = useState<CrustOption | undefined>(
-    item.crustOptions && item.crustOptions.length > 0 ? item.crustOptions[0] : undefined
-  );
+  const [selectedCrust, setSelectedCrust] = useState<CrustOption | undefined>();
   const [selectedAddOns, setSelectedAddOns] = useState<AddOnOption[]>([]);
   const [quantity, setQuantity] = useState(1);
   const [instructions, setInstructions] = useState('');
+
+  useEffect(() => {
+    if (!activeItemForModal) return;
+
+    setSelectedCrust(activeItemForModal.crustOptions?.[0]);
+    setSelectedAddOns([]);
+    setQuantity(1);
+    setInstructions('');
+  }, [activeItemForModal]);
+
+  if (!activeItemForModal) return null;
+
+  const item = activeItemForModal;
 
   const toggleAddOn = (addon: AddOnOption) => {
     if (selectedAddOns.some((a) => a.id === addon.id)) {
@@ -37,40 +44,41 @@ export const ItemCustomizeModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-[120] overflow-y-auto flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-[120] overflow-y-auto flex items-center justify-center p-2 sm:p-6">
       {/* Backdrop */}
       <div
         onClick={() => setActiveItemForModal(null)}
-        className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity animate-in fade-in"
+        className="fixed inset-0 bg-black/85 backdrop-blur-md transition-opacity animate-in fade-in"
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-2xl bg-[#141414] border border-white/10 rounded-3xl shadow-2xl overflow-hidden z-10 my-8 animate-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-2xl bg-[#141414] border border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden z-10 my-4 sm:my-8 animate-in zoom-in-95 duration-200">
         {/* Close Button */}
         <button
           onClick={() => setActiveItemForModal(null)}
-          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/60 border border-white/10 text-[#A39E93] hover:text-[#FBF9F5] hover:bg-black/80 transition-colors"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 p-2 rounded-full bg-black/70 border border-white/15 text-[#A39E93] hover:text-[#FBF9F5] transition-colors"
+          aria-label="Close dialog"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="max-h-[85vh] overflow-y-auto">
-          {/* 3D Preview Stage */}
-          <div className="relative h-64 sm:h-72 bg-gradient-to-b from-[#1E1916] to-[#141414] border-b border-white/10 flex items-center justify-center">
-            <MiniPizzaViewer variant={item.modelVariant as any} className="w-full h-full" />
-            <div className="absolute bottom-3 left-4 text-[10px] text-[#A39E93] tracking-widest uppercase flex items-center gap-1.5 bg-black/40 px-3 py-1 rounded-full border border-white/5">
-              <Sparkles className="w-3 h-3 text-[#D9A35F]" />
-              <span>Interactive 360° Wood-Fired Preview</span>
-            </div>
+        <div className="max-h-[88vh] overflow-y-auto">
+          {/* Menu Item Photo */}
+          <div className="relative h-48 sm:h-72 bg-[#1E1916] border-b border-white/10">
+            <img
+              src={getMenuItemImage(item)}
+              alt={item.name}
+              className="h-full w-full object-cover"
+            />
             {item.isSeasonalSpecial && (
-              <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#C85A32]/80 border border-[#C85A32] text-white text-[11px] font-semibold tracking-wider uppercase">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 px-2.5 py-1 rounded-full bg-[#C85A32]/90 border border-[#C85A32] text-white text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase">
                 {item.seasonalBadge || 'Special Drop'}
               </div>
             )}
           </div>
 
           {/* Details Body */}
-          <div className="p-6 sm:p-8 space-y-6">
+          <div className="p-4 sm:p-8 space-y-5 sm:space-y-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-xs uppercase tracking-widest text-[#D9A35F] font-medium">
@@ -82,15 +90,15 @@ export const ItemCustomizeModal: React.FC = () => {
                   </span>
                 )}
               </div>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#FBF9F5]">
+              <h2 className="font-serif text-xl sm:text-3xl font-bold text-[#FBF9F5]">
                 {item.name}
               </h2>
               {item.italianName && (
-                <p className="font-serif text-sm text-[#D9A35F] italic mt-0.5">
+                <p className="font-serif text-xs sm:text-sm text-[#D9A35F] italic mt-0.5">
                   « {item.italianName} »
                 </p>
               )}
-              <p className="text-xs sm:text-sm text-[#A39E93] leading-relaxed mt-3 font-light">
+              <p className="text-xs sm:text-sm text-[#A39E93] leading-relaxed mt-2 sm:mt-3 font-light">
                 {item.description}
               </p>
               {item.storySnippet && (
