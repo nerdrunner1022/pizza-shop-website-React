@@ -12,6 +12,13 @@ const TOMATO_LAYOUT: Omit<FloatingTomatoProps, 'model'>[] = [
   { initPos: [0.9, 1.3, -1.2], speed: 1, offset: 4.1, rotationSpeed: -0.9 },
 ];
 
+const MOBILE_TOMATO_LAYOUT: Omit<FloatingTomatoProps, 'model'>[] = [
+  { initPos: [-0.95, 0.45, -0.5], speed: 1.1, offset: 0.2, rotationSpeed: 0.8 },
+  { initPos: [0.95, 0.45, -0.4], speed: 0.9, offset: 1.5, rotationSpeed: 0.6 },
+  { initPos: [-0.7, 0.25, 0.3], speed: 1.3, offset: 2.7, rotationSpeed: -0.7 },
+  { initPos: [0.7, 0.2, 0.4], speed: 0.85, offset: 3.8, rotationSpeed: 0.5 },
+];
+
 interface FloatingTomatoProps {
   model: NormalizedModel;
   initPos: [number, number, number];
@@ -50,7 +57,7 @@ const FloatingTomato: React.FC<FloatingTomatoProps> = ({
   );
 };
 
-const FloatingIngredientsScene: React.FC = () => {
+const FloatingIngredientsScene: React.FC<{ isMobile: boolean }> = ({ isMobile }) => {
   const embersRef = useRef<THREE.Points>(null);
   const { scene } = useGLTF(new URL('../../models/tomato.glb', import.meta.url).href);
   const tomatoModel = useMemo(
@@ -82,27 +89,29 @@ const FloatingIngredientsScene: React.FC = () => {
 
   return (
     <group>
-      {TOMATO_LAYOUT.map((tomato, index) => (
+      {(isMobile ? MOBILE_TOMATO_LAYOUT : TOMATO_LAYOUT).map((tomato, index) => (
         <FloatingTomato key={index} {...tomato} model={tomatoModel} />
       ))}
-      <points ref={embersRef}>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[emberPositions, 3]} />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.045}
-          color="#FF8A3D"
-          transparent
-          opacity={0.7}
-          blending={THREE.AdditiveBlending}
-        />
-      </points>
+      {!isMobile && (
+        <points ref={embersRef}>
+          <bufferGeometry>
+            <bufferAttribute attach="attributes-position" args={[emberPositions, 3]} />
+          </bufferGeometry>
+          <pointsMaterial
+            size={0.045}
+            color="#FF8A3D"
+            transparent
+            opacity={0.7}
+            blending={THREE.AdditiveBlending}
+          />
+        </points>
+      )}
     </group>
   );
 };
 
-export const FloatingIngredients: React.FC = () => (
+export const FloatingIngredients: React.FC<{ isMobile?: boolean }> = ({ isMobile = false }) => (
   <Suspense fallback={null}>
-    <FloatingIngredientsScene />
+    <FloatingIngredientsScene isMobile={isMobile} />
   </Suspense>
 );

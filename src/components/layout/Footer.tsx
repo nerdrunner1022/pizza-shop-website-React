@@ -160,6 +160,21 @@ export const Footer: React.FC = () => {
           </ul>
         </div>
 
+        <div className="border-t border-white/10 py-5 flex flex-col gap-2 text-[11px] text-[#A39E93] font-light sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            Designed &amp; Developed by <span className="text-[#FBF9F5]">Neirah Tech</span>
+          </p>
+          <p>
+            Contact:{' '}
+            <a
+              href="tel:+94760041594"
+              className="text-[#FBF9F5] hover:text-[#D9A35F] transition-colors"
+            >
+              +94 760041594
+            </a>
+          </p>
+        </div>
+
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#A39E93] font-light gap-4">
           <p>© {new Date().getFullYear()} Antonio’s Corner Pizzeria. All rights reserved.</p>

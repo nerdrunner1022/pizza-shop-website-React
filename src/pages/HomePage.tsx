@@ -127,10 +127,10 @@ export const HomePage: React.FC = () => {
       {/* 1. HERO 3D SECTION */}
       <section
         ref={heroRef}
-        className="relative min-h-[110vh] sm:min-h-[100vh] lg:min-h-[105vh] flex items-start sm:items-center pt-24 sm:pt-28 pb-12 sm:pb-16 px-4 sm:px-8 lg:px-16 xl:px-20 border-b border-white/5 w-full"
+        className="relative min-h-[max(100svh,52rem)] sm:min-h-[100vh] lg:min-h-[105vh] flex items-start sm:items-center pt-24 sm:pt-28 pb-12 sm:pb-16 px-4 sm:px-8 lg:px-16 xl:px-20 border-b border-white/5 w-full"
       >
-        {/* Background 3D Scene */}
-        <div className="absolute inset-0 z-0 pointer-events-auto">
+        {/* Keep the mobile scene below the hero copy instead of behind it. */}
+        <div className="absolute inset-x-0 top-[max(24rem,calc(100svh-24rem))] bottom-0 z-0 pointer-events-none sm:inset-0 sm:pointer-events-auto">
           <Hero3DCanvas scrollProgress={scrollProgress} />
         </div>
 

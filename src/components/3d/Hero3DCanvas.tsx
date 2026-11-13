@@ -78,7 +78,7 @@ export const Hero3DCanvas: React.FC<Hero3DCanvasProps> = ({
         <PerspectiveCamera
           makeDefault
           position={[isMobile ? 0 : 0.4, 2.0, 2.5]}
-          fov={isMobile ? 50 : 42}
+          fov={isMobile ? 38 : 42}
         />
         <CameraRig scrollProgress={scrollProgress} isMobile={isMobile} />
 
@@ -116,13 +116,14 @@ export const Hero3DCanvas: React.FC<Hero3DCanvasProps> = ({
         />
 
         <Suspense fallback={null}>
-          <group position={[isMobile ? 0.35 : 1.1, isMobile ? -1.15 : -0.1, 0]}>
+          <group position={[isMobile ? 0 : 1.1, isMobile ? 0.25 : -0.1, 0]}>
             <PizzaModel
               variant="margherita"
               modelAsset="realistic"
-              scale={isMobile ? 0.42 : 0.62}
+              scale={isMobile ? 0.56 : 0.62}
               rotationSpeed={0.25}
               tiltAngle={-Math.PI / 9}
+              tiltZ={-0.08}
               initialRotationY={Math.PI / 6}
               isInteractive={false}
             />
@@ -130,11 +131,11 @@ export const Hero3DCanvas: React.FC<Hero3DCanvasProps> = ({
         </Suspense>
 
         {/* Floating artisanal ingredient assets */}
-        <FloatingIngredients />
+        <FloatingIngredients isMobile={isMobile} />
 
         {/* Soft realistic floor shadow */}
         <ContactShadows
-          position={[isMobile ? 0.35 : 1.1, isMobile ? -1.15 : -0.35, 0]}
+          position={[isMobile ? 0 : 1.1, isMobile ? 0.25 : -0.35, 0]}
           opacity={0.6}
           scale={5}
           blur={2.4}

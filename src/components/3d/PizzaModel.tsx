@@ -21,6 +21,7 @@ interface PizzaModelProps {
   rotationSpeed?: number;
   isInteractive?: boolean;
   tiltAngle?: number;
+  tiltZ?: number;
   initialRotationY?: number;
   alignToFloor?: boolean;
 }
@@ -57,6 +58,7 @@ export const PizzaModel: React.FC<PizzaModelProps> = ({
   rotationSpeed = 0.3,
   isInteractive = true,
   tiltAngle = 0.2,
+  tiltZ = 0,
   initialRotationY = 0,
   alignToFloor = true,
 }) => {
@@ -82,14 +84,14 @@ export const PizzaModel: React.FC<PizzaModelProps> = ({
       );
       tiltRef.current.rotation.z = THREE.MathUtils.lerp(
         tiltRef.current.rotation.z,
-        -mouseX * 0.3,
+        tiltZ - mouseX * 0.3,
         0.05
       );
     }
   });
 
   return (
-    <group ref={tiltRef} rotation={[tiltAngle, 0, 0]} scale={scale} dispose={null}>
+    <group ref={tiltRef} rotation={[tiltAngle, 0, tiltZ]} scale={scale} dispose={null}>
       <group ref={spinRef} rotation={[0, initialRotationY, 0]}>
         <group position={normalizedModel.position} scale={normalizedModel.scale}>
           <primitive object={normalizedModel.object} />
